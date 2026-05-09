@@ -2,8 +2,9 @@
 
 To run tailwind:
 
-'''bash
+```bash
 npm install
 
-'''bash
+
+```bash
 npm run dev
