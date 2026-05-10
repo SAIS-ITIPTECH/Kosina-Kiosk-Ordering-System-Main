@@ -1,7 +1,18 @@
+import { Categories } from "./DynamicElements/Categories.js";
+import { OrderList } from "./Models/OrderList.js";
+export const orderList = new OrderList();
+
+
 // ===============================================================
 // DINING SELECTION
 
-function selectDiningOption(option) {
+let isDiningSelecting = false;
+
+async function selectDiningOption(option) {
+    if (isDiningSelecting) return;
+    isDiningSelecting = true;
+
+    orderList.setDiningMethod(option)
     const diningSection = document.getElementById('diningSection');
     const menuSection = document.getElementById('menuSection');
     const diningOptionText = document.getElementById('diningOption');
@@ -9,15 +20,20 @@ function selectDiningOption(option) {
     diningOptionText.innerText = "Dining Option: " + option;
     diningSection.classList.add('fade-out-up');
 
-    setTimeout(() => {
-        diningSection.classList.add('section-hidden');
+    const categoryObject = new Categories();
+    await categoryObject.display();
 
+    setTimeout(() => {
+        isDiningSelecting = false
+        diningSection.classList.add('section-hidden');
         menuSection.classList.remove('hidden');
         menuSection.classList.add('flex');
-
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 600);
 }
+
+// ===============================================================
+// HOME BUTTOM TO RESET THE ORDER
 
 function home() {
     const diningSection = document.getElementById('diningSection');
@@ -26,6 +42,8 @@ function home() {
     diningSection.classList.remove('section-hidden', 'fade-out-up');
     menuSection.classList.add('hidden');
     menuSection.classList.remove('flex');
+    document.getElementById('orderPanel').innerText = "";
+    orderList.resetOrder()
 }
 
 document.getElementById('checkoutBtn').disabled = (orderPanel.children.length === 0);
@@ -35,7 +53,6 @@ document.getElementById('checkoutBtn').disabled = (orderPanel.children.length ==
 // CATEGORY SELECTION 
 
 
-const categoryTitle = document.getElementById('categoryTitle');
 const categoryButtons = document.querySelectorAll('.category');
 const defaultCategoryBtn = document.getElementById('defaultCategory');
 
@@ -44,43 +61,27 @@ if (defaultCategoryBtn) {
     defaultCategoryBtn.classList.add('active-category');
 }
 
-categoryButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const categoryName = button.querySelector('.categoryName').innerText;
-
-        categoryTitle.innerText = categoryName;
-
-        const currentActive = document.querySelector('.category.active-category');
-        if (currentActive) {
-            currentActive.classList.remove('active-category');
-        }
-
-        button.classList.add('active-category');
-
-    });
-})
-
-
 // ===============================================================
 // ORDER POPUP
-
 
 const modal = document.getElementById('modalOverlay');
 const qtyText = document.getElementById('quantityCount');
 let currentQty = 1;
 
-function openPopup(imgSrc, title, price) {
-    document.getElementById('popupImg').src = imgSrc;
-    document.getElementById('popupTitle').innerText = title;
-    document.getElementById('popupPrice').innerText = price;
+export function openPopup(imgSrc, title, price) {
+    document.getElementById('productInfo').innerHTML = `
+        <img id="popupImg" src="${imgSrc}" alt="Selected Food"
+        class="mb-4 aspect-square w-48 rounded-full border-4 border-[#76a609] object-cover shadow-md">
+        <h3 id="popupTitle" class="text-xl font-bold uppercase text-gray-800">${title}</h3>
+        <p id="popupPrice" class="text-lg font-bold text-[#76a609]">${price}</p>
+    `
 
     currentQty = 1;
     qtyText.innerText = currentQty;
-
     modal.classList.remove('hidden');
 }
 
-function closePopup() {
+export function closePopup() {
     modal.classList.add('hidden');
 }
 
@@ -102,99 +103,33 @@ document.querySelectorAll('.grid button.group').forEach(btn => {
 
 
 
-
-
 // ===============================================================
 // ORDER LIST
 
+function changeQty(id, delta) {
+    const targetItem = orderList.products.find(item => item.getId() === parseInt(id));
+    targetItem.setQuantity(parseInt(targetItem.getQuantity() + delta));
+    orderList.calculateTotalPrice();
 
-
-let orderItems = [];
-
-function addToOrder() {
-    const title = document.getElementById('popupTitle').innerText;
-    const priceText = document.getElementById('popupPrice').innerText;
-    const price = parseFloat(priceText.replace('₱', '').trim());
-    const image = document.getElementById('popupImg').src;
-    const qty = parseInt(document.getElementById('quantityCount').innerText);
-    const orderPanel = document.getElementById('orderPanel');
-
-
-    const existingItem = orderItems.find(item => item.name === title);
-
-    if (existingItem) {
-        existingItem.quantity += qty;
+    if (targetItem.getQuantity() < 1) {
+        removeItem(targetItem.getId());
     } else {
-        orderItems.push({
-            name: title,
-            price: price,
-            image: image,
-            quantity: qty
-        });
-    }
+        document.getElementById(`order${id}`).innerText = targetItem.getQuantity();
+        document.getElementById("totalPrice").innerText = orderList.totalPrice.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
 
-    document.getElementById('checkoutBtn').disabled = false;
-
-    renderOrder();
-    closePopup();
-}
-
-function renderOrder() {
-    const panel = document.getElementById('orderPanel');
-    panel.innerHTML = '';
-    let total = 0;
-
-    orderItems.forEach((item, index) => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-
-        panel.innerHTML += `
-            <div class="flex items-center gap-3 border-b pb-4">
-                <img src="${item.image}" class="h-12 w-12 rounded object-cover border border-gray-200">
-                <div class="flex-1">
-                    <p class="text-sm font-bold uppercase">${item.name}</p>
-                    <p class="text-xs text-[#76a609] font-bold">₱ ${item.price.toFixed(2)}</p>
-                </div>
-                
-                <!-- Edit Quantity Controls -->
-                <div class="flex items-center gap-2">
-                    <button onclick="changeQty(${index}, -1)" class="h-6 w-6 rounded bg-gray-100 text-xs font-bold">-</button>
-                    <span class="text-sm font-bold w-4 text-center">${item.quantity}</span>
-                    <button onclick="changeQty(${index}, 1)" class="h-6 w-6 rounded bg-[#d8e0c6] text-[#76a609] text-xs font-bold">+</button>
-                    <button onclick="removeItem(${index})" class="ml-2 text-red-400 hover:text-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        `;
-    });
-
-    document.getElementById('subtotal').innerText = `₱ ${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
-    document.getElementById('totalPrice').innerText = `₱ ${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
-}
-
-function changeQty(index, delta) {
-    orderItems[index].quantity += delta;
-    if (orderItems[index].quantity < 1) {
-        removeItem(index);
-    } else {
-        renderOrder();
     }
 }
 
-function removeItem(index) {
-    orderItems.splice(index, 1);
-    renderOrder();
+function removeItem(id) {
+    orderList.products = orderList.products.filter(orders => orders.getId() != parseInt(id))
+    orderList.calculateTotalPrice();
+    document.getElementById(`order${id}`).parentElement.parentElement.remove()
+    document.getElementById("totalPrice").innerText = orderList.totalPrice.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
 }
-
 
 
 // ===============================================================
-// 
-
-
+// OPENS CHECKOUT SCREEN
 
 function startCheckout() {
     document.getElementById('menuSection').classList.add('hidden');
@@ -208,24 +143,30 @@ function startCheckout() {
     showStep('stepSummary', 25);
 }
 
+// ===============================================================
+// SUMMARY FOR THE ORDER
+
 function renderSummary() {
 
     const list = document.getElementById('summaryList');
     list.innerHTML = '';
 
-    orderItems.forEach(item => {
+    orderList.products.forEach(item => {
         const row = document.createElement('div');
         row.className = "flex justify-between items-center text-2xl";
         row.innerHTML = `
-            <span class="font-bold text-gray-600">${item.name}</span>
-            <span class="text-sm text-gray-500 ">x${item.quantity}</span>
-            <span class="font-bold text-gray-500">₱ ${(item.price * item.quantity).toFixed(2)}</span>
+            <span class="font-bold text-gray-600">${item.getName()}</span>
+            <span class="text-sm text-gray-500 ">x${item.getQuantity()}</span>
+            <span class="font-bold text-gray-500">${item.getTotalPrice().toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}</span>
         `;
         list.appendChild(row);
     });
 
     document.getElementById('summaryTotal').innerText = document.getElementById('totalPrice').innerText;
 }
+
+// ===============================================================
+// DETECT THE STEP OF THE CHECKOUT
 
 function showStep(stepId, progress) {
     ['stepSummary', 'stepPayment', 'stepService', 'stepFinal'].forEach(id => {
@@ -237,23 +178,85 @@ function showStep(stepId, progress) {
     document.getElementById('progressBar').style.width = progress + '%';
 }
 
+// ===============================================================
+// GO BACK TO THE ORDER MENU
+
 function backToMenu() {
     document.getElementById('checkoutSection').classList.add('hidden');
     document.getElementById('checkoutSection').classList.remove('flex');
     document.getElementById('menuSection').classList.remove('hidden');
     document.getElementById('menuSection').classList.add('flex');
+
 }
 
-function completeCheckout() {
-    const num = Math.floor(Math.random() * 99) + 1;
-    document.getElementById('finalOrderNumber').innerText = num.toString().padStart(2, '0');
+// ===============================================================
+// SELECT PAYMENT METHOD
 
+async function selectPaymentMethod(method) {
+    console.log(method)
+    const paymentMethod = (method === "cashless") ? "cashless" : "cash";
+    let orderObject = [];
+    for (let orders of orderList.products) {
+        orderObject.push({
+            "productId": orders.getId(),
+            "quantity": orders.getQuantity()
+        })
+    }
+    let checkoutInfo = await postApi("neworder", {
+        "paymentMethod": paymentMethod,
+        "restoName": getCookie("resto"),
+        "orders": orderObject
+    });
+
+    orderList.orderId = checkoutInfo["orderId"];
+
+    if (paymentMethod === "cashless") {
+        checkout(checkoutInfo)
+    } else {
+        console.log("next")
+        showStep('stepService', 75);
+    }
+}
+
+// ===============================================================
+// MAKES A POP UP WINDOW IF PAYMENT IS CASHLESS
+
+async function checkout(checkoutInfo) {
+    const width = 800;
+    const height = 800;
+    const left = (window.screen.width / 2) - (width / 2);
+    const top = (window.screen.height / 2) - (height / 2);
+    const checkoutPopup = window.open(checkoutInfo["url"], 'paymongo_checkout',
+        `width=${width},height=${height},left=${left},top=${top},resizable=no,scrollbars=yes`
+    );
+
+    const interval = setInterval(async () => {
+        const response = await getApi("checkpaid", checkoutInfo["id"])
+        if (await response["data"]["attributes"]["payments"].length != 0) {
+            clearInterval(interval);
+            checkoutPopup.close();
+            showStep('stepService', 75);
+        } else if (checkoutPopup.closed) {
+            clearInterval(interval);
+            window.alert("payment cancelled")
+        }
+    }, 2000);
+}
+
+// ===============================================================
+// FINISH THE CHECKOUT
+
+function completeCheckout() {
+    document.getElementById('finalOrderNumber').innerText = orderList.orderId.slice(-4);
     showStep('stepFinal', 100);
 }
 
+// ===============================================================
+// RESET THE KIOSK FROM THE START AFTER THE ORDER
+
 function resetToStart() {
     let orderpanel = document.getElementById('orderPanel');
-    orderItems = [];
+    orderList.resetOrder();
     orderpanel.innerHTML = '';
     document.getElementById('subtotal').innerText = '₱ 0.00';
     document.getElementById('totalPrice').innerText = '₱ 0.00';
@@ -272,3 +275,118 @@ function resetToStart() {
 }
 
 document.getElementById('checkoutBtn').disabled = true;
+
+// ===============================================================
+// API CONNECTORS
+
+export async function postApi(target, body) {
+    let response = await fetch(`https://kosina-api.up.railway.app/${target}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": `Bearer ${getCookie("token")}`
+        },
+        body: JSON.stringify(body)
+    })
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
+}
+
+export async function getApi(target, id = "") {
+    let response = await fetch(`https://kosina-api.up.railway.app/${target}/${id}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${getCookie("token")}`
+        }
+    })
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
+}
+
+const loginButton = document.getElementById("loginButton");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+
+
+// ===============================================================
+// LOGIN SCREEN
+async function submit() {
+    let data = await postApi("login", {
+        "username": username.value,
+        "password": password.value
+    });
+
+    username.value = "";
+    password.value = "";
+
+    if (data["status"] === "error") { window.alert(`${data["message"]}`); }
+    else {
+        saveToCookie(data);
+    }
+}
+
+// ===============================================================
+// SAVE THE RESTO DATA TO COOKIE 
+
+function saveToCookie(data) {
+    document.cookie = `token=${data["token"]}; max-age=${data["expiration"]}; path=/`
+    document.cookie = `name=${data["name"]}; max-age=${data["expiration"]}; path=/`
+    document.cookie = `resto=${data["resto"]}; max-age=${data["expiration"]}; path=/`
+}
+
+// ===============================================================
+// CHECK IF TOKEN EXIST IN THE COOKIE
+
+async function checkToken() {
+    let data = await getApi("return");
+    if (data["status"] === "error") {
+        window.alert(`${data["message"]}`);
+
+    }
+    else {
+        window.alert("welcome back");
+    }
+}
+
+// ===============================================================
+// GET DATA FROM COOKIE
+
+function getCookie(target) {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+        const [name, value] = cookie.split('=');
+        if (name.trim() === target) {
+            return decodeURIComponent(value);
+        }
+    }
+    return null;
+}
+
+// ===============================================================
+// LOG OUT THE ACCOUNT FROM THE KIOSK
+
+function logout() {
+    document.cookie = "token= ;max-age=0; path=/;";
+    document.cookie = "name= ;max-age=0; path=/;";
+    document.cookie = "resto= ;max-age=0; path=/;";
+    location.reload();
+}
+
+// ===============================================================
+// MAKES IT POSSIBLE FOR HTML TO CALL THESE FUNCTIONS FURING 
+
+window.submit = submit;
+window.selectDiningOption = selectDiningOption;
+window.home = home;
+window.updateQty = updateQty;
+window.changeQty = changeQty;
+window.removeItem = removeItem;
+window.closePopup = closePopup;
+window.startCheckout = startCheckout;
+window.backToMenu = backToMenu;
+window.showStep = showStep;
+window.selectPaymentMethod = selectPaymentMethod;
+window.completeCheckout = completeCheckout;
+window.resetToStart = resetToStart;
+
+fetch("https://kosina-api.up.railway.app/ping").catch(() => { });

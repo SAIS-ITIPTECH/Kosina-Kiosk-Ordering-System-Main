@@ -9,42 +9,20 @@
 
 </head>
 
-<style>
-    * {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-    *::-webkit-scrollbar {
-        display: none;
-    }
-
-    .category.active-category {
-        background-color: #76a609;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        border-color: #76a609;
-    }
-
-    .category.active-category .categoryName {
-        color: white;
-    }
-
-    .section-hidden {
-        display: none !important;
-    }
-
-    .fade-out-up {
-        transform: translateY(-100%);
-        opacity: 0;
-        transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
-    }
-
-    #menuSection {
-        transition: opacity 0.6s ease-in-out;
-    }
-</style>
 
 <body class="antialiased">
+
+    <!-------------------Log In Screen ------------------->
+    <div id="loginPanel">
+        <h1>LOGIN</h1>
+        <label for="email">USERNAME: </label>
+        <input type="text" id="username">
+        <br>
+        <label for="pass">PASSWORD: </label>
+        <input type="text" id="password">
+        <br>
+        <button value="" id="loginButton" onclick="submit()">LOGIN</buton>
+    </div>
 
 
     <!-------------------Dining Option Screen ------------------->
@@ -124,43 +102,14 @@
                 </h1>
             </header>
 
-            <div class="mb-8 flex justify-center gap-4">
+            <!--================================ CATEGORY BUTTONS ===================================-->
+            <div class="mb-8 flex justify-center gap-4" id="categoryContainer"></div>
+
+            <!--================================ PR0DUCT BUTTONS ===================================-->
+            <div class="grid flex-1 grid-cols-3 gap-6 overflow-y-auto pb-24 no-scrollbar" id="productList"></div>
 
 
-                <button id="defaultCategory"
-                    class="category flex h-24 w-24 flex-col items-center justify-center rounded-xl border bg-white shadow-sm transition-all duration-200 hover:bg-[#d8e0c6] hover:shadow-xl hover:scale-105">
-                    <div class="mb-2 h-8 w-8 border-2 border-dashed border-gray-300 rounded"></div>
-                    <span class="categoryName text-[10px] text-black font-bold uppercase ">Best Seller</span>
-                </button>
-
-                <button
-                    class="category flex h-24 w-24 flex-col items-center justify-center rounded-xl border bg-white shadow-sm transition-all duration-200 hover:bg-[#d8e0c6] hover:shadow-xl hover:scale-105">
-                    <div class="mb-2 h-8 w-8 border-2 border-dashed border-gray-300 rounded"></div>
-                    <span class="categoryName text-[10px] font-bold uppercase text-black">Main Dish</span>
-                </button>
-
-            </div>
-
-
-            <div class="grid flex-1 grid-cols-3 gap-6 overflow-y-auto pb-24 no-scrollbar">
-
-                <button class="group flex flex-col items-center p-4 transition-all active:scale-95">
-                    <img src=""
-                        class="mb-4 aspect-square w-full max-w-40 border-2 border-dashed border-gray-300 rounded-full transition-colors group-hover:border-[#76a609]"
-                        alt="Food 1">
-                    <h3 class="text-xs font-bold uppercase text-gray-600">FOOD 1</h3>
-                    <p class="font-bold text-[#76a609]">₱ 00.00</p>
-                </button>
-
-                <button class="group flex flex-col items-center p-4 transition-all active:scale-95">
-                    <img src="" class=" mb-4 aspect-square w-full max-w-40 border-2 border-dashed border-gray-300 rounded-full
-                        transition-colors group-hover:border-[#76a609]" alt="Food 2">
-                    <h3 class="text-xs font-bold uppercase text-gray-600">FOOD 2</h3>
-                    <p class="font-bold text-[#76a609]">₱ 00.00</p>
-                </button>
-
-            </div>
-
+            <!--================================ Popup ===================================-->
 
             <div id="quantityPopUp" class="">
                 <div id="modalOverlay"
@@ -168,12 +117,7 @@
 
                     <div class="w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl scale-100 transition-transform">
 
-                        <div class="flex flex-col items-center">
-                            <img id="popupImg" src="" alt="Selected Food"
-                                class="mb-4 aspect-square w-48 rounded-full border-4 border-[#76a609] object-cover shadow-md">
-                            <h3 id="popupTitle" class="text-xl font-bold uppercase text-gray-800">FOOD NAME</h3>
-                            <p id="popupPrice" class="text-lg font-bold text-[#76a609]">₱ 00.00</p>
-                        </div>
+                        <div class="flex flex-col items-center" id="productInfo"></div>
 
                         <hr class="my-6 border-gray-100">
 
@@ -186,11 +130,11 @@
                         </div>
 
                         <div class="flex flex-col gap-3">
-                            <button onclick="addToOrder()"
+                            <button id="addOrder"
                                 class="w-full rounded-xl bg-[#76a609] py-4 font-bold uppercase text-white shadow-lg transition-all hover:bg-[#658e08] active:scale-95">
                                 Add to Order
                             </button>
-                            <button onclick="closePopup()"
+                            <button id="closePopup"
                                 class="w-full py-2 font-bold uppercase text-gray-400 hover:text-gray-600">
                                 Cancel
                             </button>
@@ -291,12 +235,12 @@
         <div id="stepPayment" class="hidden flex-1 flex flex-col items-center justify-center p-10">
             <h2 class="text-5xl font-black text-[#76a609] mb-16 uppercase tracking-tighter">Select Payment</h2>
             <div class="flex gap-10">
-                <button onclick="showStep('stepService', 75)"
+                <button onclick="selectPaymentMethod('cashless')"
                     class="w-80 aspect-square bg-white border-4 border-gray-100 rounded-[3rem] flex flex-col items-center justify-center gap-6 hover:border-[#76a609] hover:shadow-2xl transition-all group">
                     <div class="text-7xl group-hover:scale-110 transition-transform">💳</div>
                     <p class="font-black text-2xl uppercase text-gray-800">Cashless</p>
                 </button>
-                <button onclick="showStep('stepService', 75)"
+                <button onclick="selectPaymentMethod('cash')"
                     class="w-80 aspect-square bg-white border-4 border-gray-100 rounded-[3rem] flex flex-col items-center justify-center gap-6 hover:border-[#76a609] hover:shadow-2xl transition-all group">
                     <div class="text-7xl group-hover:scale-110 transition-transform">💵</div>
                     <p class="font-black text-2xl uppercase text-gray-800">At Counter</p>
@@ -342,7 +286,7 @@
 
 
 
-    <script src="./src/script.js"></script>
+    <script type="module" src="./src/script.js"></script>
 
 </body>
 
