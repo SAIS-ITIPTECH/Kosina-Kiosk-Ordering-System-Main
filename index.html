@@ -14,7 +14,7 @@
 
     <!-------------------Log In Screen ------------------->
 
-    <section id="loginPan" class="flex items-center justify-center h-screen bg-gray-100 p-6">
+    <section id="loginPan" class="select-none flex items-center justify-center h-screen bg-gray-100 p-6">
 
         <div id="noticeCard"
             class="bg-white w-full max-w-2xl p-16 rounded-[3rem] shadow-2xl border border-gray-100 text-center animate-fade-in">
@@ -43,7 +43,8 @@
 
     </section>
 
-    <div id="loginPanel" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-md items-center justify-center p-6">
+    <div id="loginPanel"
+        class="select-none hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-md items-center justify-center p-6">
         <div class="bg-white w-full max-w-md p-12 rounded-[3rem] shadow-2xl relative animate-modal-pop">
 
             <button id="authoClose"
@@ -90,7 +91,7 @@
     <section id="diningSection"
         class="hidden h-screen w-screen bg-gray-100 flex flex-col items-center justify-center p-10 font-sans text-gray-800 antialiased transition-all duration-700">
 
-        <h3 class="text-4xl font-black uppercase tracking-tight text-[#76a609] mb-16 text-center">
+        <h3 class=" select-none text-4xl font-black uppercase tracking-tight text-[#76a609] mb-16 text-center">
             What is your dining option?
         </h3>
 
@@ -99,23 +100,25 @@
             <button onclick="selectDiningOption('Dine In')"
                 class="bg-white w-96 aspect-square rounded-3xl flex flex-col items-center justify-center p-12 shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-[#fbfdf7] group">
 
-                <div class="mb-10 p-6 rounded-full bg-gray-50 group-hover:bg-[#d8e0c6] transition-colors duration-300">
+                <div
+                    class="select-none mb-10 p-6 rounded-full bg-gray-50 group-hover:bg-[#d8e0c6] transition-colors duration-300">
                     <img src="" class="w-40 h-40 opacity-80 group-hover:opacity-100 transition-opacity"
                         alt="Dine In Icon">
                 </div>
 
-                <p class="text-[#76a609] text-3xl font-black uppercase tracking-wider">DINE IN</p>
+                <p class="select-none text-[#76a609] text-3xl font-black uppercase tracking-wider">DINE IN</p>
             </button>
 
             <button onclick="selectDiningOption('Take Out')"
                 class="bg-white w-96 aspect-square rounded-3xl flex flex-col items-center justify-center p-12 shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-[#fbfdf7] group">
 
-                <div class="mb-10 p-6 rounded-full bg-gray-50 group-hover:bg-[#d8e0c6] transition-colors duration-300">
+                <div
+                    class="select-none mb-10 p-6 rounded-full bg-gray-50 group-hover:bg-[#d8e0c6] transition-colors duration-300">
                     <img src="" class="w-40 h-40 opacity-80 group-hover:opacity-100 transition-opacity"
                         alt="Take Out Icon">
                 </div>
 
-                <p class="text-[#76a609] text-3xl font-black uppercase tracking-wider">TAKE OUT</p>
+                <p class="select-none text-[#76a609] text-3xl font-black uppercase tracking-wider">TAKE OUT</p>
             </button>
 
         </div>
@@ -133,7 +136,7 @@
 
 
 
-    <section id="menuSection" class="hidden h-screen w-full bg-gray-100 font-sans text-gray-800 ">
+    <section id="menuSection" class="select-none hidden h-screen w-full bg-gray-100 font-sans text-gray-800 ">
 
         <!--================================ LEFT PANELL ===================================-->
 
@@ -245,7 +248,8 @@
     <!-------------------CHECK OUT Screen ------------------->
 
 
-    <section id="checkoutSection" class="hidden h-screen w-screen bg-white font-sans text-gray-800 flex-col">
+    <section id="checkoutSection"
+        class="select-none hidden h-screen w-screen bg-white font-sans text-gray-800 flex-col">
 
         <div class="w-full bg-gray-100 h-2">
             <div id="progressBar" class="bg-[#76a609] h-full transition-all duration-500" style="width: 25%"></div>
