@@ -268,8 +268,18 @@ function resetToStart() {
 
     document.getElementById('checkoutBtn').disabled = true;
 
-    document.getElementById('checkoutSection').classList.add('hidden');
-    document.getElementById('checkoutSection').classList.remove('flex');
+
+    setTimeout(() => {
+        document.getElementById('checkoutSection').classList.add('hidden');
+        document.getElementById('checkoutSection').classList.remove('flex');
+        document.getElementById('loading').classList.remove('hidden');
+        setTimeout(() => {
+            document.getElementById('loading').classList.add('hidden');
+        }, 800);
+    }, 600);
+    document.getElementById('diningSection').classList.remove('section-hidden', 'fade-out-up');
+    window.scrollTo(0, 0);
+
 
     const diningSection = document.getElementById('diningSection');
     diningSection.classList.remove('section-hidden', 'fade-out-up');
@@ -277,6 +287,7 @@ function resetToStart() {
     showStep('stepSummary', 25);
 
     window.scrollTo(0, 0);
+
 }
 
 document.getElementById('checkoutBtn').disabled = true;
