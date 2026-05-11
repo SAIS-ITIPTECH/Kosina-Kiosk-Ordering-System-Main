@@ -26,11 +26,16 @@ async function selectDiningOption(option) {
     setTimeout(() => {
         isDiningSelecting = false
         diningSection.classList.add('section-hidden');
-        menuSection.classList.remove('hidden');
-        menuSection.classList.add('flex');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const loading = document.getElementById('loading').classList.remove('hidden');
+        setTimeout(() => {
+            document.getElementById("loading").classList.add("hidden");
+            menuSection.classList.remove('hidden');
+            menuSection.classList.add('flex');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 800);
     }, 600);
 }
+
 
 // ===============================================================
 // HOME BUTTOM TO RESET THE ORDER
@@ -132,12 +137,12 @@ function removeItem(id) {
 // OPENS CHECKOUT SCREEN
 
 function startCheckout() {
-    document.getElementById('menuSection').classList.add('hidden');
-    document.getElementById('menuSection').classList.remove('flex');
+    const menu = document.getElementById('menuSection');
+    menu.classList.add('hidden');
+    menu.classList.remove('flex');
 
     const checkout = document.getElementById('checkoutSection');
     checkout.classList.remove('hidden');
-    checkout.classList.add('flex');
 
     renderSummary();
     showStep('stepSummary', 25);
@@ -308,6 +313,29 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 
 
+
+const autho = document.getElementById("autho");
+autho.onclick = () => {
+    const loginPan = document.getElementById('loginPan');
+    const popup = document.getElementById('loginPanel');
+    popup.classList.remove('hidden');
+    popup.classList.add('flex');
+    loginPan.classList.add("hidden");
+}
+
+const authoClose = document.getElementById("authoClose");
+authoClose.onclick = () => {
+    const popup = document.getElementById('loginPanel');
+    popup.classList.add('hidden');
+    const loginPan = document.getElementById('loginPan');
+    loginPan.classList.remove("hidden");
+}
+
+
+const loginPanel = document.getElementById('loginPanel');
+const loginPan = document.getElementById('loginPan');
+const diningSection = document.getElementById('diningSection');
+
 // ===============================================================
 // LOGIN SCREEN
 async function submit() {
@@ -315,6 +343,23 @@ async function submit() {
         "username": username.value,
         "password": password.value
     });
+
+
+
+    setTimeout(() => {
+        loginPan.classList.add("hidden");
+        loginPanel.classList.add('hidden');
+        document.getElementById("loading").classList.remove("hidden");
+
+        setTimeout(() => {
+            document.getElementById("loading").classList.add("hidden");
+            diningSection.classList.remove('hidden');
+        }, 800);
+    }, 400);
+
+
+
+
 
     username.value = "";
     password.value = "";

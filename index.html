@@ -13,23 +13,81 @@
 <body class="antialiased">
 
     <!-------------------Log In Screen ------------------->
-    <div id="loginPanel">
-        <h1>LOGIN</h1>
-        <label for="email">USERNAME: </label>
-        <input type="text" id="username">
-        <br>
-        <label for="pass">PASSWORD: </label>
-        <input type="text" id="password">
-        <br>
-        <button value="" id="loginButton" onclick="submit()">LOGIN</buton>
+
+    <section id="loginPan" class="flex items-center justify-center h-screen bg-gray-100 p-6">
+
+        <div id="noticeCard"
+            class="bg-white w-full max-w-2xl p-16 rounded-[3rem] shadow-2xl border border-gray-100 text-center animate-fade-in">
+            <div class="mb-8 p-10 bg-red-50 rounded-full inline-block">
+                <span class="text-6xl">⚠️</span>
+            </div>
+
+            <h2 class="text-4xl font-black text-gray-800 uppercase tracking-tighter mb-4 leading-tight">
+                Your Kiosk is not <span class="text-red-500">connected</span> to the system
+            </h2>
+
+            <p class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-10 px-10">
+                Please log in with your <span class="text-[#76a609]">KOSina</span> account first.
+                <br><br>
+                <span class="text-xs opacity-60">If you are the customer, please reach out to the workers. Sorry for the
+                    inconvenience.</span>
+            </p>
+
+            <button id="autho"
+                class="w-full bg-[#76a609] text-white py-6 rounded-3xl font-black uppercase tracking-[0.2em] shadow-xl shadow-[#76a609]/30 hover:scale-105 active:scale-95 transition-all">
+                Authorized Login
+            </button>
+        </div>
+
+
+    </section>
+
+    <div id="loginPanel" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-md items-center justify-center p-6">
+        <div class="bg-white w-full max-w-md p-12 rounded-[3rem] shadow-2xl relative animate-modal-pop">
+
+            <button id="authoClose"
+                class="absolute top-8 right-8 text-gray-300 hover:text-red-500 transition-colors font-black">
+                ✕
+            </button>
+
+            <header class="text-center mb-10">
+                <h1 class="text-[#76a609] text-5xl font-black uppercase tracking-tighter">Login</h1>
+                <p class="text-gray-400 text-[10px] font-black tracking-[0.3em] mt-2">ADMIN TERMINAL ACCESS</p>
+            </header>
+
+            <div class="space-y-2">
+                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Admin
+                    Username</label>
+                <input type="text" id="username"
+                    class="w-full p-5 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#76a609] outline-none transition-all placeholder-gray-300 font-bold"
+                    placeholder="Enter ID" required>
+            </div>
+
+            <br>
+            <div class="space-y-2">
+                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Access Key</label>
+                <input type="password" id="password" maxlength="20"
+                    class="w-full p-5 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#76a609] outline-none transition-all placeholder-gray-300 font-bold"
+                    placeholder="••••••••" required>
+            </div>
+            <br>
+            <button value="" id="loginButton" onclick="submit()"
+                class="w-full bg-[#76a609] text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-[#76a609]/30 hover:bg-[#658e08] hover:scale-[1.02] active:scale-95 transition-all mt-4">
+                Enter Dashboard
+            </button>
+        </div>
     </div>
 
+    <section id="loading" class="hidden flex flex-col items-center justify-center h-screen">
+        <div class="w-16 h-16 border-4 border-[#d8e0c6] border-t-[#76a609] rounded-full animate-spin mb-4"></div>
+        <p class="text-[#76a609] text-xl font-black uppercase tracking-widest animate-pulse">Loading</p>
+    </section>
 
     <!-------------------Dining Option Screen ------------------->
 
 
     <section id="diningSection"
-        class="h-screen w-screen bg-gray-100 flex flex-col items-center justify-center p-10 font-sans text-gray-800 antialiased transition-all duration-700">
+        class="hidden h-screen w-screen bg-gray-100 flex flex-col items-center justify-center p-10 font-sans text-gray-800 antialiased transition-all duration-700">
 
         <h3 class="text-4xl font-black uppercase tracking-tight text-[#76a609] mb-16 text-center">
             What is your dining option?
@@ -63,7 +121,10 @@
     </section>
 
 
-
+    <section id="loading" class="hidden flex flex-col items-center justify-center h-screen">
+        <div class="w-16 h-16 border-4 border-[#d8e0c6] border-t-[#76a609] rounded-full animate-spin mb-4"></div>
+        <p class="text-[#76a609] text-xl font-black uppercase tracking-widest animate-pulse">Loading</p>
+    </section>
 
 
     <!-------------------Menu Screen ------------------->
@@ -98,12 +159,13 @@
 
             <header class="mb-8 text-center">
                 <p id="diningOption" class="text-sm font-medium text-[#76a609]">Dining Option: Eat In</p>
-                <h1 id="categoryTitle" class="text-4xl font-black uppercase tracking-tight text-[#76a609]">Best Seller
-                </h1>
+                <h1 id="categoryTitle" class="text-4xl font-black uppercase tracking-tight text-[#76a609]"></h1>
             </header>
 
             <!--================================ CATEGORY BUTTONS ===================================-->
-            <div class="mb-8 flex justify-center gap-4" id="categoryContainer"></div>
+            <div class="mb-8 flex w-full flex-nowrap gap-6 overflow-x-auto p-4 px-4 scroll-smooth"
+                id="categoryContainer">
+            </div>
 
             <!--================================ PR0DUCT BUTTONS ===================================-->
             <div class="grid flex-1 grid-cols-3 gap-6 overflow-y-auto pb-24 no-scrollbar" id="productList"></div>
@@ -112,10 +174,11 @@
             <!--================================ Popup ===================================-->
 
             <div id="quantityPopUp" class="">
+
                 <div id="modalOverlay"
                     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 hidden backdrop-blur-sm">
 
-                    <div class="w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl scale-100 transition-transform">
+                    <div class="animate-modal-pop w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl scale-100 ">
 
                         <div class="flex flex-col items-center" id="productInfo"></div>
 
@@ -226,7 +289,7 @@
                     Back to Menu
                 </button>
                 <button onclick="showStep('stepPayment', 50)"
-                    class="flex-[2] bg-[#76a609] py-5 rounded-xl font-bold uppercase text-white shadow-lg shadow-[#76a609]/30 hover:bg-[#658e08] active:scale-[0.98] transition-all">
+                    class="flex-2 bg-[#76a609] py-5 rounded-xl font-bold uppercase text-white shadow-lg shadow-[#76a609]/30 hover:bg-[#658e08] active:scale-[0.98] transition-all">
                     Proceed to Payment
                 </button>
             </div>

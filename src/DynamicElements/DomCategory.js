@@ -13,14 +13,26 @@ export class DomCategory extends DomContainer {
 
     render(parent) {
         let categoryName = document.createElement('button');
+
+        // Using a flex-shrink-0 to ensure buttons don't squash when the list gets long
+        categoryName.className = `
+        category flex-shrink-0 flex h-32 w-32 flex-col items-center justify-center 
+        rounded-2xl bg-white shadow-md transition-all duration-300 
+        hover:bg-[#84a91c] hover:text-white hover:shadow-xl hover:-translate-y-1
+    `.trim();
+
         categoryName.innerHTML = `
-            <div class="mb-2 h-8 w-8 border-2 border-dashed border-gray-300 rounded"></div>
-            <span class="categoryName text-[10px] text-black font-bold uppercase ">${this.name}</span>
-        `;
+        <div class="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-50 border-2 border-dashed border-gray-300 group-hover:border-white">
+            </div>
+        <span class="categoryName text-xs font-bold uppercase tracking-wider text-inherit">
+            ${this.name}
+        </span>
+    `;
+
         categoryName.value = this.index;
-        categoryName.className = "category flex h-24 w-24 flex-col items-center justify-center rounded-xl border bg-white shadow-sm transition-all duration-200 hover:bg-[#d8e0c6] hover:shadow-xl hover:scale-105";
-        categoryName.id = this.value
+        categoryName.id = this.value;
         categoryName.onclick = this.displayProduct;
+
         parent.appendChild(categoryName);
         this.element = categoryName;
     }

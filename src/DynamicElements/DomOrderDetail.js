@@ -9,9 +9,9 @@ export class DomOrderDetail extends DomContainer {
     }
 
     // HTML builder for the order details
-    render(container){
+    render(container) {
         container.innerHTML += `
-            <div class="flex items-center gap-3 border-b pb-4">
+            <div class="flex items-center gap-3 border-b pb-4 animate-item-add">
                 <img src="${this.imgUrl}" class="h-12 w-12 rounded object-cover border border-gray-200">
                 <div class="flex-1">
                     <p class="text-sm font-bold uppercase">${this.name}</p>

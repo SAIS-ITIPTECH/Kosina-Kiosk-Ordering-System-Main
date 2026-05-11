@@ -31,27 +31,28 @@ export class Categories extends DomList {
         });
     }
 
-    putToItems(categories){
+    putToItems(categories) {
         this.items = categories.map(cat => {
             const item = new DomCategory(cat);
             item.displayProduct = async () => {
                 if (this.product.isLoading) return;
                 const currentActive = document.querySelector('.category.active-category');
                 if (currentActive) {
-                    currentActive.classList.remove('active-category'); 
+                    currentActive.classList.remove('active-category');
                 }
                 this.categoryTitle.innerText = item.name;
                 await this.product.display(item.id);
                 item.element.classList.add('active-category');
             }
             return item;
-        });   
+        });
     }
 
-    async setDefault(defaultId){
+    async setDefault(defaultId) {
         const defaultCategoryBtn = document.getElementById(defaultId);
         defaultCategoryBtn.classList.add('active-category');
-        this.categoryTitle.innerText = defaultCategoryBtn.childNodes[3].innerText;
+        const defaultItem = this.items.find(item => item.id == defaultId);
+        this.categoryTitle.innerText = defaultItem ? defaultItem.name : defaultCategoryBtn.querySelector('.categoryName')?.textContent.trim();
         await this.product.display(defaultCategoryBtn.id)
     }
 }
