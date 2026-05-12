@@ -9,17 +9,26 @@ export class DomProduct extends DomContainer {
     }
 
     render(parent) {
-        let productCard = document.createElement('button');
+        let productCard = document.createElement('div');
+        productCard.className = "bg-white border-[1.5px] border-[#d8e0c6] rounded-[2rem] p-6 flex flex-col items-center shadow-sm hover:shadow-md transition-all";
+
         productCard.innerHTML = `
-            <img src="${this.imgUrl}"
-            class="mb-4 aspect-square w-full max-w-40 border-2 border-dashed border-gray-300 rounded-full transition-colors group-hover:border-[#76a609]"
-            alt="Food 1">
-            <h3 class="text-xs font-bold uppercase text-gray-600">${this.name}</h3>
-            <p class="font-bold text-[#76a609]">${this.price.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}</p>
-        `;
-                             
-        productCard.onclick = () => this.addOrder();
-        productCard.className = "productClass group flex flex-col items-center p-4 transition-all active:scale-95"
+        <div class="mb-4 aspect-square w-40 h-40 overflow-hidden rounded-full border-4 border-white shadow-inner">
+            <img src="${this.imgUrl}" class="w-full h-full object-cover" alt="${this.name}">
+        </div>
+
+        <div class="text-center mb-4 flex-1">
+            <h3 class="text-sm font-black uppercase text-gray-700 tracking-tight leading-tight mb-2 px-2">${this.name}</h3>
+            <p class="text-xl font-bold text-[#76a609]">${this.price.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}</p>
+        </div>
+
+        <button class="add-btn w-full bg-[#76a609] text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+            <span class="text-xl">+</span> Add to Order
+        </button>
+    `;
+
+        productCard.querySelector('.add-btn').onclick = () => this.addOrder();
+
         parent.appendChild(productCard);
     }
 }

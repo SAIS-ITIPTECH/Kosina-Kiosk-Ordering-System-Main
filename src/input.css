@@ -132,3 +132,12 @@
 .section-fade {
     transition: opacity 0.4s ease, transform 0.4s ease;
 }
+
+
+.sidebar-hidden {
+    width: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    overflow: hidden;
+    border: none !important;
+}

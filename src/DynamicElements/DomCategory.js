@@ -14,24 +14,29 @@ export class DomCategory extends DomContainer {
     render(parent) {
         let categoryName = document.createElement('button');
 
-        // Using a flex-shrink-0 to ensure buttons don't squash when the list gets long
         categoryName.className = `
-        category flex-shrink-0 flex h-32 w-32 flex-col items-center justify-center 
-        rounded-2xl bg-white shadow-md transition-all duration-300 
-        hover:bg-[#84a91c] hover:text-white hover:shadow-xl hover:-translate-y-1
+        category flex-shrink-0 px-8 py-3 
+        rounded-2xl font-bold uppercase text-[14px] tracking-wide
+        bg-[#494b43] text-white transition-all duration-200
+        hover:bg-[#76a609] hover:text-white 
+        focus:bg-[#76a609] focus:text-white focus:shadow-lg
     `.trim();
 
-        categoryName.innerHTML = `
-        <div class="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-50 border-2 border-dashed border-gray-300 group-hover:border-white">
-            </div>
-        <span class="categoryName text-xs font-bold uppercase tracking-wider text-inherit">
-            ${this.name}
-        </span>
-    `;
+        categoryName.innerHTML = `${this.name}`;
 
         categoryName.value = this.index;
         categoryName.id = this.value;
-        categoryName.onclick = this.displayProduct;
+
+        categoryName.onclick = (event) => {
+            document.querySelectorAll('.category').forEach(btn => {
+                btn.classList.remove('bg-[#76a609]', 'text-white');
+                btn.classList.add('bg-[#494b43]', 'text-white');
+            });
+            categoryName.classList.add('bg-[#76a609]', 'text-white');
+
+            this.displayProduct(event);
+            categoryName.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+        };
 
         parent.appendChild(categoryName);
         this.element = categoryName;

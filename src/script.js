@@ -446,3 +446,12 @@ window.completeCheckout = completeCheckout;
 window.resetToStart = resetToStart;
 
 fetch("https://kosina-api.up.railway.app/ping").catch(() => { });
+
+
+
+function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+
+    // Toggle the hidden class
+    sidebar.classList.toggle('sidebar-hidden');
+}
