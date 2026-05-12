@@ -319,43 +319,19 @@ export async function getApi(target, id = "") {
     return text ? JSON.parse(text) : null;
 }
 
+// ===============================================================
+// LOGIN SCREEN
 const loginButton = document.getElementById("loginButton");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
-
-
-
-const autho = document.getElementById("autho");
-autho.onclick = () => {
-    const loginPan = document.getElementById('loginPan');
-    const popup = document.getElementById('loginPanel');
-    popup.classList.remove('hidden');
-    popup.classList.add('flex');
-    loginPan.classList.add("hidden");
-}
-
-const authoClose = document.getElementById("authoClose");
-authoClose.onclick = () => {
-    const popup = document.getElementById('loginPanel');
-    popup.classList.add('hidden');
-    const loginPan = document.getElementById('loginPan');
-    loginPan.classList.remove("hidden");
-}
-
-
 const loginPanel = document.getElementById('loginPanel');
-const loginPan = document.getElementById('loginPan');
 const diningSection = document.getElementById('diningSection');
 
-// ===============================================================
-// LOGIN SCREEN
 async function submit() {
     let data = await postApi("login", {
         "username": username.value,
         "password": password.value
     });
-
-
 
     setTimeout(() => {
         loginPan.classList.add("hidden");
@@ -367,10 +343,6 @@ async function submit() {
             diningSection.classList.remove('hidden');
         }, 800);
     }, 400);
-
-
-
-
 
     username.value = "";
     password.value = "";
@@ -388,20 +360,6 @@ function saveToCookie(data) {
     document.cookie = `token=${data["token"]}; max-age=${data["expiration"]}; path=/`
     document.cookie = `name=${data["name"]}; max-age=${data["expiration"]}; path=/`
     document.cookie = `resto=${data["resto"]}; max-age=${data["expiration"]}; path=/`
-}
-
-// ===============================================================
-// CHECK IF TOKEN EXIST IN THE COOKIE
-
-async function checkToken() {
-    let data = await getApi("return");
-    if (data["status"] === "error") {
-        window.alert(`${data["message"]}`);
-
-    }
-    else {
-        window.alert("welcome back");
-    }
 }
 
 // ===============================================================
@@ -429,6 +387,33 @@ function logout() {
 }
 
 // ===============================================================
+// CHECK IF TOKEN EXIST IN THE COOKIE
+const loginPan = document.getElementById('loginPan');
+
+function goToAutho(){
+    loginPanel.classList.remove('hidden');
+    loginPanel.classList.add('flex');
+    loginPan.classList.add("hidden");
+}
+
+function closeAutho(){
+    loginPanel.classList.add('hidden');
+    const loginPan = document.getElementById('loginPan');
+    loginPan.classList.remove("hidden");
+}
+
+async function checkToken() {
+    let data = await getApi("return");
+    if (data["status"] === "error") {
+        loginPan.classList.remove("hidden");
+    } else {
+        diningSection.classList.remove('hidden');
+    }
+}
+
+checkToken();
+
+// ===============================================================
 // MAKES IT POSSIBLE FOR HTML TO CALL THESE FUNCTIONS FURING 
 
 window.submit = submit;
@@ -444,10 +429,11 @@ window.showStep = showStep;
 window.selectPaymentMethod = selectPaymentMethod;
 window.completeCheckout = completeCheckout;
 window.resetToStart = resetToStart;
+window.toggleMenu = toggleMenu;
+window.goToAutho = goToAutho;
+window.closeAutho = closeAutho;
 
 fetch("https://kosina-api.up.railway.app/ping").catch(() => { });
-
-
 
 function toggleMenu() {
     const sidebar = document.getElementById('sidebar');

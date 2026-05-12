@@ -14,7 +14,7 @@
 
     <!-------------------Log In Screen ------------------->
 
-    <section id="loginPan" class="select-none flex items-center justify-center h-screen bg-gray-100 p-6">
+    <section id="loginPan" class="select-none hidden flex items-center justify-center h-screen bg-gray-100 p-6">
 
         <div id="noticeCard"
             class="bg-white w-full max-w-2xl p-16 rounded-2xl shadow-red-200-2xl border border-gray-100 text-center animate-fade-in  transition-all group">
@@ -35,7 +35,7 @@
                     inconvenience.</span>
             </p>
 
-            <button id="autho"
+            <button onclick="goToAutho()" id="autho"
                 class="w-full bg-[#494b43] text-white py-6 rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl shadow-[#494b43]/30 hover:bg-[#76a609] hover:shadow-[#76a609]/30 hover:scale-105 active:scale-95 transition-all">
                 Authorized Login
             </button>
@@ -48,7 +48,7 @@
         class="select-none hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-md items-center justify-center p-6">
         <div class="bg-white w-full max-w-md p-12 rounded-2xl shadow-2xl relative animate-modal-pop">
 
-            <button id="authoClose"
+            <button onclick="closeAutho()" id="authoClose"
                 class="absolute top-8 right-8 text-gray-300 hover:text-red-500 transition-colors font-black">
                 ✕
             </button>
