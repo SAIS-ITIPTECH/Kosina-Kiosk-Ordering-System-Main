@@ -268,7 +268,6 @@ function resetToStart() {
     let orderpanel = document.getElementById('orderPanel');
     orderList.resetOrder();
     orderpanel.innerHTML = '';
-    document.getElementById('subtotal').innerText = '₱ 0.00';
     document.getElementById('totalPrice').innerText = '₱ 0.00';
 
     document.getElementById('checkoutBtn').disabled = true;
@@ -439,8 +438,6 @@ window.goToAutho = goToAutho;
 window.closeAutho = closeAutho;
 
 fetch("https://kosina-api.up.railway.app/ping").catch(() => { });
-
-
 
 
 
