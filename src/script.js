@@ -166,8 +166,8 @@ function renderSummary() {
         row.className = "flex gap-30 items-center text-2xl";
         row.innerHTML = `
             <span class="font-semibold flex-grow text-[#494b43]">${item.getName()}</span>
-            <span class="text-sm text-left text-gray-500 ">x${item.getQuantity()}</span>
-            <span class="font-bold text-right text-gray-500">${item.getTotalPrice().toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}</span>
+            <span class="text-sm text-right text-gray-500 ">x${item.getQuantity()}</span>
+            <span class="font-bold text-left text-gray-500">${item.getTotalPrice().toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}</span>
         `;
         list.appendChild(row);
     });
