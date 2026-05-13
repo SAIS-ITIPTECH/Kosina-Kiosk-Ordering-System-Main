@@ -92,9 +92,10 @@
     <section id="diningSection"
         class="hidden h-screen w-screen bg-gray-100 flex flex-col items-center justify-center p-10 font-sans text-gray-800 antialiased transition-all duration-700">
 
-        <h3 class=" select-none text-4xl font-black uppercase tracking-tight text-[#76a609] mb-16 text-center">
-            What is your dining option?
-        </h3>
+        <h2 class="text-5xl font-black text-[#494b43] uppercase tracking-tighter">Dining<span class="text-[#76a609]">
+                Option</span></h2>
+        <p class="text-gray-400 font-bold uppercase tracking-widest text-xs mt-2 mb-19">How would you like to eat today?
+        </p>
 
         <div class="flex gap-10 w-full max-w-5xl justify-center">
 
@@ -146,22 +147,21 @@
         <div class="flex h-screen overflow-hidden">
 
             <div id="sidebar"
-                class="flex w-20 flex-col items-center justify-start border-r bg-[#494b43] py-4 gap-9 transition-all duration-300 ease-in-out">
+                class="hidden flex w-20 flex-col items-center justify-start border-r bg-[#494b43] py-4 gap-9 transition-all duration-300 ease-in-out">
 
-                <button onclick="toggleMenu()" class="mb-4 h-10 w-10 p-2 hover:bg-white/10 rounded">
-                    <img src="./assets/icons/humburger.svg" alt="menu">
-                </button>
-
-                <button onclick="home()" class="h-10 w-10 hover:scale-115 transition-transform">
+                <button onclick="home()" class="mt-5 h-10 w-10 hover:scale-115 transition-transform">
                     <img src="./assets/icons/home.svg" class="h-full w-full">
+                    <p class="text-[10px] text-gray-300 font-bold mt-1">Home</p>
                 </button>
 
-                <button class="h-10 w-10 hover:scale-125 transition-transform">
+                <button class="h-10 w-10 hover:scale-125 transition-transform cursor-not-allowed" disabled>
                     <img src="./assets/icons/settings.svg" class="h-full w-full">
+                    <p class="text-[10px] text-gray-300 font-bold mt-1">Settings</p>
                 </button>
 
-                <button class="h-10 w-10 hover:scale-115 transition-transform">
+                <button class=" h-10 w-10 hover:scale-115 transition-transform cursor-not-allowed" disabled>
                     <img src="./assets/icons/tuts.svg" class="h-full w-full">
+                    <p class="text-[10px] text-gray-300 font-bold mt-1">Tutorials</p>
                 </button>
             </div>
 
@@ -170,23 +170,33 @@
 
         </div>
 
+        <button onclick="toggleMenu()" id="burger"
+            class="absolute m-6 h-12 w-12 p-2 hover:bg-white/10 rounded flex items-center justify-center">
+            <!-- Hamburger Icon -->
+            <img src="./assets/icons/humburger.svg" alt="menu"
+                class="burger-icon scale-70 absolute transition-all duration-300">
+            <!-- Exit Icon -->
+            <img src="./assets/icons/exitburger.svg" alt="close"
+                class="exit-icon absolute opacity-0 scale-70 rotate-90 transition-all duration-300">
+        </button>
 
         <!--================================ MAIN PANELL ===================================-->
 
-        <div class="flex flex-1 flex-col overflow-hidden p-6 no-scrollbar">
+        <div class="flex flex-1 flex-col overflow-hidden p-6 pb-0 no-scrollbar">
 
             <header class="mb-8 text-center">
                 <p id="diningOption" class="text-sm font-medium text-[#76a609]">Dining Option: Eat In</p>
                 <h1 id="categoryTitle" class="text-4xl font-black uppercase tracking-tight text-[#76a609]"></h1>
             </header>
 
-            <!--================================ CATEGORY BUTTONS ===================================-->
+            <!--================================ CATEGORY BUTTONS CONTAINER ===================================-->
             <div class="mb-8 flex w-full flex-nowrap gap-6 overflow-x-auto p-4 px-20 scroll-smooth"
                 id="categoryContainer">
             </div>
 
-            <!--================================ PR0DUCT BUTTONS ===================================-->
-            <div class="grid flex-1 grid-cols-3 gap-6 overflow-y-auto pb-24 no-scrollbar" id="productList"></div>
+            <!--================================ PR0DUCT BUTTONS CONTAINER ===================================-->
+            <div class="grid flex-1 grid-cols-3 gap-6 overflow-y-auto pb-10 mb-0 no-scrollbar" id="productList">
+            </div>
 
 
             <!--================================ Popup ===================================-->
@@ -198,28 +208,34 @@
 
                     <div class="animate-modal-pop w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl scale-100 ">
 
-                        <div class="flex flex-col items-center" id="productInfo"></div>
+                        <div class="flex flex-col items-center" id="productInfo">
 
-                        <hr class="my-6 border-gray-100">
-
-                        <div class="mb-8 flex items-center justify-center gap-6">
-                            <button onclick="updateQty(-1)"
-                                class="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-2xl font-bold text-gray-600 transition-active active:scale-90">-</button>
-                            <span id="quantityCount" class="text-2xl font-bold text-gray-800">1</span>
-                            <button onclick="updateQty(1)"
-                                class="flex h-12 w-12 items-center justify-center rounded-full bg-[#d8e0c6] text-2xl font-bold text-[#76a609] transition-active active:scale-90">+</button>
                         </div>
 
-                        <div class="flex flex-col gap-3">
+                        <hr class="my-5 border-[#eaede2]">
+
+
+
+                        <!-- Quantity controls -->
+                        <div class="mb-6 flex items-center justify-center gap-6">
+                            <button onclick="updateQty(-1)"
+                                class="flex h-12 w-12 items-center justify-center rounded-full bg-[#eaede2] text-2xl font-medium text-[#494b43] active:scale-90 transition-transform">−</button>
+                            <span id="quantityCount" class="text-3xl font-bold text-[#494b43]">1</span>
+                            <button onclick="updateQty(1)"
+                                class="flex h-12 w-12 items-center justify-center rounded-full bg-[#d4e6a0] text-2xl font-medium text-[#76a609] active:scale-90 transition-transform">+</button>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
                             <button id="addOrder"
-                                class="w-full rounded-xl bg-[#76a609] py-4 font-bold uppercase text-white shadow-lg transition-all hover:bg-[#658e08] active:scale-95">
-                                Add to Order
+                                class="w-full rounded-xl bg-[#76a609] py-4 text-sm font-bold uppercase tracking-wider text-white transition-all hover:bg-[#658e08] active:scale-95">
+                                + Add to Order
                             </button>
                             <button id="closePopup"
-                                class="w-full py-2 font-bold uppercase text-gray-400 hover:text-gray-600">
+                                class="w-full py-5 rounded-xl text-xs font-bold bg-[#494b43] uppercase tracking-wider text-[white] transition-colors">
                                 Cancel
                             </button>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -239,10 +255,7 @@
             </div>
 
             <div class="mt-auto pt-6 space-y-2 border-t">
-                <div class="flex justify-between text-sm">
-                    <span>Sub-Total</span>
-                    <span id="subtotal">₱ 0.00</span>
-                </div>
+
                 <div class="flex justify-between text-lg text-[#76a609] font-bold">
                     <span>Total</span>
                     <span id="totalPrice">₱ 0.00</span>
@@ -263,105 +276,174 @@
 
 
     <section id="checkoutSection"
-        class="select-none hidden h-screen w-screen bg-white font-sans text-gray-800 flex-col">
+        class="select-none hidden h-screen w-screen bg-gray-100 font-sans text-gray-800 flex-col overflow-hidden">
 
-        <div class="w-full bg-gray-100 h-2">
-            <div id="progressBar" class="bg-[#76a609] h-full transition-all duration-500" style="width: 25%"></div>
+        <div class="w-full bg-gray-200 h-1.5">
+            <div id="progressBar"
+                class="bg-[#76a609] h-full transition-all duration-700 ease-in-out shadow-[0_0_15px_rgba(118,166,9,0.5)]"
+                style="width: 25%"></div>
         </div>
 
-        <div id="stepSummary" class="flex-1 flex flex-col items-center justify-start p-10 pt-16">
-            <div class="text-center mb-10">
-                <h2 class="text-4xl font-black text-gray-800 uppercase tracking-tight">Order Summary</h2>
-                <p class="text-gray-500 font-medium">Please review your items before proceeding to payment</p>
-            </div>
+        <div id="stepSummary" class="flex-1 flex flex-col items-center justify-center p-6 animate-fade-in">
 
-            <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div
+                class="w-full max-w-6xl h-[90vh]  bg-white rounded-2xl shadow-2xl shadow-gray-200/50 overflow-y-scroll flex flex-col md:flex-row border border-gray-100">
 
-                <div class="grid grid-cols-11 gap-4 bg-gray-50 px-8 py-4 border-b border-gray-100">
-                    <span class="col-span-7 text-xs font-bold uppercase tracking-widest text-gray-400">Item
-                        Description</span>
+                <div class="flex-1 p-10 border-r border-gray-50">
+                    <header class="mb-8">
+                        <h2 class="text-4xl font-black text-[#494b43] uppercase tracking-tighter leading-none">Review
+                            <span class="text-[#76a609]">Order</span>
+                        </h2>
+                    </header>
 
-                    <span
-                        class="col-span-3 text-xs font-bold uppercase tracking-widest text-gray-400 text-right">Price</span>
+                    <div id="summaryList" class="space-y-4 max-h-[40vh] overflow-y-auto pr-4 no-scrollbar">
+                    </div>
                 </div>
 
-                <div id="summaryList" class="divide-y divide-gray-50 max-h-[45vh] overflow-y-auto px-8 no-scrollbar">
-                </div>
+                <div class="w-full md:w-80 bg-gray-50 p-10 flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Amount</p>
+                        <h3 id="summaryTotal" class="text-5xl font-black text-[#76a609] tracking-tighter mb-8">₱ 0.00
+                        </h3>
+                    </div>
 
-                <div class="bg-gray-50 p-8 border-t border-gray-100">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="text-sm font-bold text-gray-400 uppercase tracking-tighter">Amount Due</p>
-                            <p class="text-xs text-gray-400 italic">Inclusive of all taxes</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-5xl font-black text-[#76a609] tracking-tighter" id="summaryTotal">₱
-                                0.00</span>
-                        </div>
+                    <div class="space-y-4 mt-12">
+                        <button onclick="showStep('stepPayment', 50)"
+                            class="w-full bg-[#76a609] text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-[#76a609]/30 hover:bg-[#658e08] hover:scale-[1.02] active:scale-95 transition-all">
+                            Pay Now
+                        </button>
+                        <button onclick="backToMenu()"
+                            class="w-full bg-[#494b43] text-white py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all">
+                            Add More
+                        </button>
                     </div>
                 </div>
             </div>
-
-            <div class="flex gap-4 mt-10 w-full max-w-2xl">
-                <button onclick="backToMenu()"
-                    class="flex-1 py-5 rounded-xl font-bold uppercase text-gray-500 bg-white border border-gray-200 hover:bg-gray-50 transition-all">
-                    Back to Menu
-                </button>
-                <button onclick="showStep('stepPayment', 50)"
-                    class="flex-2 bg-[#76a609] py-5 rounded-xl font-bold uppercase text-white shadow-lg shadow-[#76a609]/30 hover:bg-[#658e08] active:scale-[0.98] transition-all">
-                    Proceed to Payment
-                </button>
-            </div>
         </div>
 
-        <div id="stepPayment" class="hidden flex-1 flex flex-col items-center justify-center p-10">
-            <h2 class="text-5xl font-black text-[#76a609] mb-16 uppercase tracking-tighter">Select Payment</h2>
-            <div class="flex gap-10">
+        <div id="stepPayment" class="hidden flex-1 flex flex-col items-center justify-center p-10 animate-modal-pop">
+
+            <h2 class="text-5xl font-black text-[#494b43] uppercase tracking-tighter">Payment<span
+                    class="text-[#76a609]">
+                    Method</span></h2>
+            <p class="text-gray-400 font-bold uppercase tracking-widest text-xs mt-2 mb-19">How would you like to pay?
+            </p>
+
+            <div class="flex gap-10 w-full max-w-5xl justify-center">
+
                 <button onclick="selectPaymentMethod('cashless')"
-                    class="w-80 aspect-square bg-white border-4 border-gray-100 rounded-[3rem] flex flex-col items-center justify-center gap-6 hover:border-[#76a609] hover:shadow-2xl transition-all group">
-                    <div class="text-7xl group-hover:scale-110 transition-transform">💳</div>
-                    <p class="font-black text-2xl uppercase text-gray-800">Cashless</p>
+                    class="bg-white w-96 aspect-square rounded-2xl flex flex-col items-center justify-center p-12 shadow-2xl border border-gray-100 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(118,166,9,0.15)] hover:scale-105 hover:bg-[#fbfdf7] group">
+
+                    <div class="select-none mb-10 p-6 rounded-full bg-[#494b43]">
+                        <img src="./assets/icons/card.svg"
+                            class="w-40 h-40 opacity-80 group-hover:opacity-100 transition-all duration-300 group-hover:drop-shadow-[0_10px_15px_rgba(0,0,0,0.9)] group-hover:scale-111"
+                            alt="Dine In Icon">
+                    </div>
+
+                    <p class="select-none text-[#76a609] text-3xl text-shadow-2xl font-black uppercase tracking-widest">
+                        DIGITAL PAYMENT</p>
+                    <p class="text-xs text-gray-400 mt-2 font-bold uppercase">G-Cash / Maya / Cards</p>
                 </button>
+
                 <button onclick="selectPaymentMethod('cash')"
-                    class="w-80 aspect-square bg-white border-4 border-gray-100 rounded-[3rem] flex flex-col items-center justify-center gap-6 hover:border-[#76a609] hover:shadow-2xl transition-all group">
-                    <div class="text-7xl group-hover:scale-110 transition-transform">💵</div>
-                    <p class="font-black text-2xl uppercase text-gray-800">At Counter</p>
+                    class="bg-white w-96 aspect-square rounded-2xl flex flex-col items-center justify-center p-12 shadow-2xl border border-gray-100 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(118,166,9,0.15)] hover:scale-105 hover:bg-[#fbfdf7] group">
+
+                    <div class="select-none mb-10 p-6 rounded-full bg-[#494b43]">
+                        <img src="./assets/icons/cash.svg"
+                            class="w-40 h-40 opacity-80 group-hover:opacity-100 transition-all duration-300 group-hover:drop-shadow-[0_10px_15px_rgba(0,0,0,0.9)] group-hover:scale-120"
+                            alt="Take Out Icon">
+                    </div>
+
+                    <p class="select-none text-[#76a609] text-3xl text-shadow-2xl font-black uppercase tracking-widest">
+                        AT THE COUNTER
+                    </p>
+                    <p class="text-xs text-gray-400 mt-2 font-bold uppercase">Pay via Cashier</p>
                 </button>
+
             </div>
         </div>
 
-        <div id="stepService" class="hidden flex-1 flex flex-col items-center justify-center p-10">
-            <h2 class="text-5xl font-black text-[#76a609] mb-16 uppercase tracking-tighter">How to receive?</h2>
-            <div class="flex gap-10">
+        <div id="stepService" class="hidden flex-1 flex flex-col items-center justify-center p-10 animate-modal-pop">
+            <h2 class="text-5xl font-black text-[#494b43] uppercase tracking-tighter">Receiving<span
+                    class="text-[#76a609]">
+                    Style</span></h2>
+            <p class="text-gray-400 font-bold uppercase tracking-widest text-xs mt-2 mb-19">How would you like to
+                receive your order?
+            </p>
+
+            <div class="flex gap-10 w-full max-w-5xl justify-center">
+
                 <button onclick="completeCheckout()"
-                    class="w-80 aspect-square bg-white border-4 border-gray-100 rounded-[3rem] flex flex-col items-center justify-center gap-6 hover:border-[#76a609] hover:shadow-2xl transition-all group">
-                    <div class="text-7xl">🏃</div>
-                    <p class="font-black text-2xl uppercase text-gray-800">Pick up</p>
+                    class="bg-white w-96 aspect-square rounded-2xl flex flex-col items-center justify-center p-12 shadow-2xl border border-gray-100 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(118,166,9,0.15)] hover:scale-105 hover:bg-[#fbfdf7] group">
+
+                    <div class="select-none mb-10 p-6 rounded-full bg-[#494b43]">
+                        <img src="./assets/icons/pickUp.svg"
+                            class="w-40 h-40 opacity-80 group-hover:opacity-100 transition-all duration-300 group-hover:drop-shadow-[0_10px_15px_rgba(0,0,0,0.9)] group-hover:scale-111"
+                            alt="Pick Up Icon">
+                    </div>
+
+                    <p class="select-none text-[#76a609] text-3xl text-shadow-2xl font-black uppercase tracking-widest">
+                        PICK UP
+                    </p>
+                    <p class="text-xs text-gray-400 mt-2 font-bold uppercase">Get your order at the counter</p>
                 </button>
+                </button>
+
                 <button onclick="completeCheckout()"
-                    class="w-80 aspect-square bg-white border-4 border-gray-100 rounded-[3rem] flex flex-col items-center justify-center gap-6 hover:border-[#76a609] hover:shadow-2xl transition-all group">
-                    <div class="text-7xl">🍽️</div>
-                    <p class="font-black text-2xl uppercase text-gray-800">Table Service</p>
+                    class="bg-white w-96 aspect-square rounded-2xl flex flex-col items-center justify-center p-12 shadow-2xl border border-gray-100 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(118,166,9,0.15)] hover:scale-105 hover:bg-[#fbfdf7] group">
+
+                    <div class="select-none mb-10 p-6 rounded-full bg-[#494b43]">
+                        <img src="./assets/icons/serve.svg"
+                            class="w-40 h-40 opacity-80 group-hover:opacity-100 transition-all duration-300 group-hover:drop-shadow-[0_10px_15px_rgba(0,0,0,0.9)] group-hover:scale-120"
+                            alt="Take Out Icon">
+                    </div>
+
+                    <p class="select-none text-[#76a609] text-3xl text-shadow-2xl font-black uppercase tracking-widest">
+                        DELIVER TO TABLE
+                    </p>
+                    <p class="text-xs text-gray-400 mt-2 font-bold uppercase">Have your order brought to your table</p>
                 </button>
+
             </div>
         </div>
 
-        <div id="stepFinal" class="hidden flex-1 flex flex-col items-center justify-center p-10 text-center">
-            <div class="mb-8 p-10 bg-[#f4f9e6] rounded-full animate-bounce">
-                <svg class="w-20 h-20 text-[#76a609]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path>
-                </svg>
+        <div id="stepFinal" class="hidden flex-1 flex flex-col items-center justify-center min-h-full p-6 bg-[#494b43]">
+
+            <div
+                class="bg-white w-full max-w-md rounded-[2.5rem] p-8 text-center shadow-2xl relative overflow-hidden animate-modal-pop">
+
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-[#76a609] rounded-full opacity-10"></div>
+
+                <div class="relative z-10">
+                    <div
+                        class="mb-4 inline-flex items-center justify-center w-20 h-20 bg-[#76a609] rounded-full text-white">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                    </div>
+
+                    <h2 class="text-3xl font-black text-[#494b43] uppercase tracking-tighter mb-1">
+                        Order <span class="text-[#76a609]">Confirmed</span>
+                    </h2>
+                    <p class="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-6">
+                        Grab your receipt below
+                    </p>
+
+                    <div class="bg-gray-50 rounded-2xl py-6 mb-8 border-2 border-dashed border-gray-200">
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-1">Queue Number</p>
+                        <h1 id="finalOrderNumber"
+                            class="text-8xl font-black text-[#494b43] tracking-tighter leading-none">
+                            88
+                        </h1>
+                    </div>
+
+                    <button onclick="resetToStart()"
+                        class="w-full bg-[#494b43] text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-[#76a609] transition-all shadow-lg active:scale-95">
+                        Done
+                    </button>
+                </div>
             </div>
-            <h2 class="text-3xl font-bold text-gray-500 uppercase tracking-widest">Order Placed!</h2>
-            <div class="my-10">
-                <p class="text-sm font-black text-gray-300 uppercase mb-2">Your Number</p>
-                <h1 id="finalOrderNumber" class="text-[12rem] leading-none font-black text-[#76a609]">88</h1>
-            </div>
-            <p class="text-xl text-gray-400 mb-12">Please take your receipt and wait for your number.</p>
-            <button onclick="resetToStart()"
-                class="bg-[#76a609] px-20 py-6 rounded-2xl text-white font-black uppercase text-2xl shadow-2xl hover:scale-105 transition-all">New
-                Order
-            </button>
         </div>
 
     </section>

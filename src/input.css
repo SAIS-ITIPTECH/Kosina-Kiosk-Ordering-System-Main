@@ -133,11 +133,29 @@
     transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+#sidebar {
+    transition: transform 0.9s ease-in-out;
+}
 
-.sidebar-hidden {
-    width: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    overflow: hidden;
-    border: none !important;
+
+/* When the menu is closed (default) */
+.burger-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.exit-icon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+}
+
+/* When the menu is OPEN (the .open class is active) */
+#burger.open .burger-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+}
+
+#burger.open .exit-icon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
 }

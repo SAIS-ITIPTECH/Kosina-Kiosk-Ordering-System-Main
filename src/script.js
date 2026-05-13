@@ -49,6 +49,11 @@ function home() {
     menuSection.classList.remove('flex');
     document.getElementById('orderPanel').innerText = "";
     orderList.resetOrder()
+
+
+
+    document.getElementById('checkoutBtn').disabled = true;
+
 }
 
 document.getElementById('checkoutBtn').disabled = (orderPanel.children.length === 0);
@@ -128,7 +133,7 @@ function changeQty(id, delta) {
 function removeItem(id) {
     orderList.products = orderList.products.filter(orders => orders.getId() != parseInt(id))
     orderList.calculateTotalPrice();
-    document.getElementById(`order${id}`).parentElement.parentElement.remove()
+    document.getElementById(`order${id}`).closest('.animate-item-add').remove();
     document.getElementById("totalPrice").innerText = orderList.totalPrice.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
 }
 
@@ -158,11 +163,11 @@ function renderSummary() {
 
     orderList.products.forEach(item => {
         const row = document.createElement('div');
-        row.className = "flex justify-between items-center text-2xl";
+        row.className = "flex gap-30 items-center text-2xl";
         row.innerHTML = `
-            <span class="font-bold text-gray-600">${item.getName()}</span>
-            <span class="text-sm text-gray-500 ">x${item.getQuantity()}</span>
-            <span class="font-bold text-gray-500">${item.getTotalPrice().toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}</span>
+            <span class="font-semibold flex-grow text-[#494b43]">${item.getName()}</span>
+            <span class="text-sm text-right text-gray-500 ">x${item.getQuantity()}</span>
+            <span class="font-bold text-left text-gray-500">${item.getTotalPrice().toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}</span>
         `;
         list.appendChild(row);
     });
@@ -390,13 +395,13 @@ function logout() {
 // CHECK IF TOKEN EXIST IN THE COOKIE
 const loginPan = document.getElementById('loginPan');
 
-function goToAutho(){
+function goToAutho() {
     loginPanel.classList.remove('hidden');
     loginPanel.classList.add('flex');
     loginPan.classList.add("hidden");
 }
 
-function closeAutho(){
+function closeAutho() {
     loginPanel.classList.add('hidden');
     const loginPan = document.getElementById('loginPan');
     loginPan.classList.remove("hidden");
@@ -435,9 +440,19 @@ window.closeAutho = closeAutho;
 
 fetch("https://kosina-api.up.railway.app/ping").catch(() => { });
 
+
+
+
+
 function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
+    const burger = document.getElementById('burger');
 
-    // Toggle the hidden class
-    sidebar.classList.toggle('sidebar-hidden');
+    sidebar.classList.toggle('hidden');
+
+    // Toggle the 'open' class to trigger the animation
+    burger.classList.toggle('open');
+
+    // Your existing margin toggle
+    burger.classList.toggle('ml-23');
 }
