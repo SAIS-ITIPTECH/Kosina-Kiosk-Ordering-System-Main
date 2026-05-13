@@ -41,18 +41,17 @@ async function selectDiningOption(option) {
 // HOME BUTTOM TO RESET THE ORDER
 
 function home() {
+
+
     const diningSection = document.getElementById('diningSection');
     const menuSection = document.getElementById('menuSection');
 
     diningSection.classList.remove('section-hidden', 'fade-out-up');
     menuSection.classList.add('hidden');
     menuSection.classList.remove('flex');
-    document.getElementById('orderPanel').innerText = "";
-    orderList.resetOrder()
 
 
 
-    document.getElementById('checkoutBtn').disabled = true;
 
 }
 
@@ -123,6 +122,7 @@ function changeQty(id, delta) {
 
     if (targetItem.getQuantity() < 1) {
         removeItem(targetItem.getId());
+        document.getElementById('checkoutBtn').disabled = true;
     } else {
         document.getElementById(`order${id}`).innerText = targetItem.getQuantity();
         document.getElementById("totalPrice").innerText = orderList.totalPrice.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
