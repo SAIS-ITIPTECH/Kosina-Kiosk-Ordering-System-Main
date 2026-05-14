@@ -50,13 +50,17 @@ function home() {
     menuSection.classList.add('hidden');
     menuSection.classList.remove('flex');
 
-
-
-
 }
 
 document.getElementById('checkoutBtn').disabled = (orderPanel.children.length === 0);
 
+//================================================================
+// CHANGE BUTTON
+
+function toggleChange() {
+    const changeBtn = document.getElementById('changeBtn');
+
+}
 
 // ===============================================================
 // CATEGORY SELECTION 
@@ -135,6 +139,8 @@ function removeItem(id) {
     orderList.calculateTotalPrice();
     document.getElementById(`order${id}`).closest('.animate-item-add').remove();
     document.getElementById("totalPrice").innerText = orderList.totalPrice.toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
+    document.getElementById('checkoutBtn').disabled = true;
+
 }
 
 
